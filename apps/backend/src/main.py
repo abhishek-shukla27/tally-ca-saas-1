@@ -11,3 +11,4 @@ app = FastAPI(title="Tally-CA SaaS Backend", version="0.1.0")
 def health() -> dict:
     return {"status": "ok"}
 
+
