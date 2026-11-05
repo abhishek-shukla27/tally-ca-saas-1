@@ -45,3 +45,4 @@ class Settings(BaseSettings):
 
 # Single shared instance imported everywhere
 settings = Settings()
+

@@ -49,3 +49,4 @@ class Client(Base):
 
     def __repr__(self) -> str:
         return f"<Client id={self.id} company_name={self.company_name!r}>"
+

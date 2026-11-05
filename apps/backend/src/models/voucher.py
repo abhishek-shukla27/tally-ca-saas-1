@@ -54,3 +54,4 @@ class Voucher(Base):
             f"<Voucher id={self.id} type={self.voucher_type!r} "
             f"number={self.voucher_number!r} amount={self.amount}>"
         )
+

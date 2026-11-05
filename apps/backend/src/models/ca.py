@@ -34,3 +34,4 @@ class CA(Base):
 
     def __repr__(self) -> str:
         return f"<CA id={self.id} firm_name={self.firm_name!r}>"
+
