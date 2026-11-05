@@ -48,3 +48,4 @@ def get_current_client(
             detail="Invalid or unrecognised X-Client-Token.",
         )
     return client
+
