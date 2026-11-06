@@ -35,10 +35,15 @@ class Settings(BaseSettings):
     @field_validator("DATABASE_URL", mode="before")
     @classmethod
     def check_db_url(cls, v: str) -> str:
-        if not v.startswith(("postgresql://", "postgresql+psycopg2://")):
+        valid_prefixes = (
+            "postgresql://",
+            "postgresql+psycopg2://",
+            "postgresql+psycopg://",
+        )
+        if not v.startswith(valid_prefixes):
             raise ValueError(
-                "DATABASE_URL must start with 'postgresql://' or "
-                "'postgresql+psycopg2://'"
+                "DATABASE_URL must start with 'postgresql://', "
+                "'postgresql+psycopg2://', or 'postgresql+psycopg://'"
             )
         return v
 
