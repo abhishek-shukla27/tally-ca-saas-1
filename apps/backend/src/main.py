@@ -12,6 +12,8 @@ Startup sequence:
 
 from __future__ import annotations
 
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 import logging
 
 from fastapi import FastAPI
@@ -37,6 +39,17 @@ logging.basicConfig(
 log = logging.getLogger("main")
 
 # ---------------------------------------------------------------------------
+# Lifespan (DB table creation on startup)
+# ---------------------------------------------------------------------------
+@asynccontextmanager
+async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
+    log.info("Creating database tables (if they do not exist) …")
+    Base.metadata.create_all(bind=engine)
+    log.info("Database ready.")
+    yield
+
+
+# ---------------------------------------------------------------------------
 # App
 # ---------------------------------------------------------------------------
 app = FastAPI(
@@ -49,6 +62,7 @@ app = FastAPI(
     ),
     docs_url="/docs",
     redoc_url="/redoc",
+    lifespan=lifespan,
 )
 
 # ---------------------------------------------------------------------------
@@ -61,15 +75,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# ---------------------------------------------------------------------------
-# DB table creation on startup
-# ---------------------------------------------------------------------------
-@app.on_event("startup")
-def on_startup() -> None:
-    log.info("Creating database tables (if they do not exist) …")
-    Base.metadata.create_all(bind=engine)
-    log.info("Database ready.")
 
 
 # ---------------------------------------------------------------------------
